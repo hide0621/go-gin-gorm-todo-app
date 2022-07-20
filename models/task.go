@@ -1,3 +1,4 @@
+//DB用の構造体を定義
 package models
 
 import (
