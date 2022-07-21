@@ -1,4 +1,4 @@
-//DB用の構造体を定義
+//DB用の構造体を実装
 package models
 
 import (

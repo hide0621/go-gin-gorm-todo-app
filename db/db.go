@@ -1,4 +1,4 @@
-//DBとその接続関連を定義
+//DBとその接続関連を実装
 package db
 
 import (
@@ -34,6 +34,7 @@ func Initialize() {
 	db.AutoMigrate(&models.Task{})
 }
 
+//DB操作（CRUD）の呼び出し
 func Get() *gorm.DB {
 	return db
 }
