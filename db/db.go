@@ -3,6 +3,7 @@ package db
 
 import (
 	"go-gin-gorm-todo-app/models"
+	"log"
 
 	"github.com/jinzhu/gorm" //このgormのパッケージでないとgorm.Openが使えない
 
@@ -24,7 +25,7 @@ func Initialize() {
 	var err error
 	db, err = gorm.Open("sqlite3", "task.db")
 	if err != nil {
-		panic("failed to connect database")
+		log.Fatalln("failed to connect database")
 	}
 
 	// ログを有効にする
