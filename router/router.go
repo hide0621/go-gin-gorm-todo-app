@@ -2,6 +2,7 @@
 package router
 
 import (
+	v1 "go-gin-gorm-todo-app/api/v1"
 	"go-gin-gorm-todo-app/controllers"
 	"go-gin-gorm-todo-app/db"
 
@@ -28,9 +29,26 @@ func Router() {
 	// 第一引数にパス、第二引数にHandlerを登録する
 	router.GET("/", handler.GetAll)            // 一覧表示
 	router.POST("/", handler.Create)           // 新規作成
-	router.GET("/:id", handler.Edit)           // 編集画面
+	router.GET("/edit/:id", handler.Edit)      // 編集画面
 	router.POST("/update/:id", handler.Update) // 更新
 	router.POST("/delete/:id", handler.Delete) // 削除
+
+	// 共通の /api/v1 をパスに持つルートをグループ化する
+	apiV1 := router.Group("/api/v1")
+	{
+		api := v1.ApiTaskHandler{
+			Db: db.Get(),
+		}
+		// 編集画面の /:id というパスは :id をワイルドカードとして http://localhost:8080/1 だけではなく
+		// http://localhost:8080/api/vi/ も同一パスとして判定してしまう
+		// そのため /edit/:id に変更した
+		// panic: 'api' in new path '/api/v1/' conflicts with existing wildcard ':id' in existing prefix '/:id'
+		apiV1.GET("/", api.GetAll)       // 全件取得
+		apiV1.POST("/", api.Create)      // 新規作成
+		apiV1.GET("/:id", api.Get)       // 取得
+		apiV1.PUT("/:id", api.Update)    // 更新
+		apiV1.DELETE("/:id", api.Delete) // 削除
+	}
 
 	// Routerをhttp.Serverに接続し、HTTPリクエストのリスニングとサービスを開始する（サーバーが起動される）
 	router.Run()

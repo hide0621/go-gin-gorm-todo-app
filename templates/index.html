@@ -16,7 +16,7 @@
     {{ range .tasks }}
         <li>
             <form method="POST" action="/delete/{{.ID}}">
-                {{.ID}} : {{ .Text }} [<a href="/{{.ID}}">編集</a>]
+                {{.ID}} : {{ .Text }} [<a href="/edit/{{.ID}}">編集</a>]
                 <input type="submit" value="削除">
             </form>
         </li>
